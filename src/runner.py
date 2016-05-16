@@ -22,7 +22,7 @@ def main():
     session_token = get_new_session(config.username, config.password, app_key)
 
     market_filter = MarketFilter()
-    market_filter.event_type_ids = [11]
+    market_filter.event_type_ids = [4339]
 
     [client, esa_thread] = start_esa(config, app_key, session_token, market_filter)
 
