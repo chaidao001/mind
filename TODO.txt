@@ -5,3 +5,5 @@ logging on different files
 collect data
 
 add unit tests for updating cache
+
+clean up market cache (remove closed market)
