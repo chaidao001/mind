@@ -1,53 +1,112 @@
 import configparser
-from collections import OrderedDict
 
 
-class Config:
+class Configs:
     def __init__(self):
-        self.config_file = "conf/config.ini"
-
-        config = configparser.ConfigParser()
-        config.read(self.config_file)
-
-        self.config = config['DEFAULT']
-
-    @property
-    def host(self):
-        return self.config.get("host")
-
-    @property
-    def port(self):
-        return self.config.get("port")
-
-    @property
-    def heartbeat_interval_second(self):
-        return int(self.config.get("heartbeat_interval_second"))
-
-    @property
-    def app_key(self):
-        return self.config.get("app_key")
+        self._cred_config = CredConfig()
+        self._env_config = EnvConfig()
+        self._app_config = AppConfig()
 
     @property
     def username(self):
-        return self.config.get("username")
+        return self._cred_config.username
 
     @property
     def password(self):
-        return self.config.get("password")
+        return self._cred_config.password
+
+    @property
+    def app_key(self):
+        return self._cred_config.app_key
+
+    @property
+    def sso_endpoint(self):
+        return self._env_config.sso_endpoint
+
+    @property
+    def esa_endpoint(self):
+        return self._env_config.esa_endpoint
+
+    @property
+    def esa_heartbeat_interval_second(self):
+        return self._app_config.esa_heartbeat_interval_second
+
+    @property
+    def sso_session_duration_hour(self):
+        return self._app_config.sso_session_duration_hour
 
     @property
     def log_conf(self):
-        return self.config.get("log_conf")
+        return self._app_config.log_conf
 
-    def __repr__(self, *args, **kwargs):
-        fields = OrderedDict([("host", self.host),
-                              ("port", self.port),
-                              ("heartbeat_interval_second", self.heartbeat_interval_second),
-                              ("log_conf", self.log_conf)])
 
-        output = ""
+class Config:
+    def __init__(self, config_file):
+        config_dir = "conf/"
+        config = configparser.ConfigParser()
+        config.read(config_dir + config_file)
 
-        for key, val in fields.items():
-            output += "{:28}: {}\n".format(key, val)
+        self._config = config['DEFAULT']
 
-        return output
+
+class CredConfig(Config):
+    def __init__(self):
+        self._config_file = "cred.ini"
+        super().__init__(self._config_file)
+
+    @property
+    def username(self):
+        return self._config.get("username")
+
+    @property
+    def password(self):
+        return self._config.get("password")
+
+    @property
+    def app_key(self):
+        return self._config.get("app_key")
+
+
+class EnvConfig(Config):
+    def __init__(self):
+        self._config_file = "env.ini"
+        super().__init__(self._config_file)
+
+    @property
+    def sso_endpoint(self):
+        return self._config.get("sso")
+
+    @property
+    def esa_endpoint(self):
+        return EnvConfig.Endpoint(self._config, "esa")
+
+    class Endpoint:
+        def __init__(self, config: configparser.SectionProxy, server_name: str):
+            self._host = config.get(server_name + "_host")
+            self._port = int(config.get(server_name + "_port"))
+
+        @property
+        def host(self):
+            return self._host
+
+        @property
+        def port(self):
+            return self._port
+
+
+class AppConfig(Config):
+    def __init__(self):
+        self._config_file = "config.ini"
+        super().__init__(self._config_file)
+
+    @property
+    def esa_heartbeat_interval_second(self):
+        return int(self._config.get("esa_heartbeat_interval_second"))
+
+    @property
+    def sso_session_duration_hour(self):
+        return int(self._config.get("sso_session_duration_hour"))
+
+    @property
+    def log_conf(self):
+        return self._config.get("log_conf")

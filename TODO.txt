@@ -1,7 +1,3 @@
 esa:
 
-logging on different files
-
-collect data
-
-add unit tests for updating cache
+add a virtualiser (web page) to see the states

@@ -5,4 +5,5 @@
 log/
 
 # Config file
-conf/config.ini
+conf/cred.ini
+conf/env.ini
