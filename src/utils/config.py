@@ -1,4 +1,6 @@
 import configparser
+import logging
+import logging.config
 
 
 class Configs:
@@ -34,10 +36,6 @@ class Configs:
     @property
     def sso_session_duration_hour(self):
         return self._app_config.sso_session_duration_hour
-
-    @property
-    def log_conf(self):
-        return self._app_config.log_conf
 
 
 class Config:
@@ -99,6 +97,8 @@ class AppConfig(Config):
         self._config_file = "config.ini"
         super().__init__(self._config_file)
 
+        self._config_logger()
+
     @property
     def esa_heartbeat_interval_second(self):
         return int(self._config.get("esa_heartbeat_interval_second"))
@@ -107,6 +107,5 @@ class AppConfig(Config):
     def sso_session_duration_hour(self):
         return int(self._config.get("sso_session_duration_hour"))
 
-    @property
-    def log_conf(self):
-        return self._config.get("log_conf")
+    def _config_logger(self):
+        logging.config.fileConfig(self._config.get("log_conf"))

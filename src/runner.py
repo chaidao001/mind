@@ -12,9 +12,6 @@ def main():
     # loading configs
     configs = Configs()
 
-    # configuring logger
-    logging.config.fileConfig(configs.log_conf)
-
     # session manager
     session_manager = SessionManager(configs)
 
