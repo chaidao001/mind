@@ -21,7 +21,7 @@ def main():
 
     market_filter = MarketFilter()
 
-    [client, esa_thread] = start_esa(configs, session_manager, market_filter)
+    client = start_esa(configs, session_manager, market_filter)
 
     app = Flask(__name__)
 
@@ -47,7 +47,6 @@ def main():
 
     try:
         app.run()
-        esa_thread.join()
     except KeyboardInterrupt:
         logging.info("Keyboard interrupt")
     finally:
@@ -59,7 +58,7 @@ def start_esa(configs: Configs, session_manager: SessionManager, market_filter: 
     client = EsaClient(configs, session_manager, market_filter)
     esa_thread = threading.Thread(name="EsaThread", target=client.init)
     esa_thread.start()
-    return [client, esa_thread]
+    return client
 
 
 if __name__ == "__main__":
