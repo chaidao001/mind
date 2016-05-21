@@ -37,6 +37,10 @@ class Configs:
     def sso_session_duration_hour(self):
         return self._app_config.sso_session_duration_hour
 
+    @property
+    def server_template(self):
+        return self._app_config.server_template
+
 
 class Config:
     def __init__(self, config_file):
@@ -106,6 +110,10 @@ class AppConfig(Config):
     @property
     def sso_session_duration_hour(self):
         return int(self._config.get("sso_session_duration_hour"))
+
+    @property
+    def server_template(self):
+        return self._config.get("server_template")
 
     def _config_logger(self):
         logging.config.fileConfig(self._config.get("log_conf"))

@@ -27,7 +27,7 @@ def main():
 
     @app.route('/')
     def my_form():
-        return render_template("index.html")
+        return render_template(configs.server_template)
 
     @app.route('/', methods=['POST'])
     def get_market():
