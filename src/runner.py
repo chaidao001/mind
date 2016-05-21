@@ -32,13 +32,18 @@ def main():
     @app.route('/', methods=['POST'])
     def get_market():
         market_id = request.form['text']
-        market = client.cache.get_market(market_id)
-        if market:
-            market_def = format_to_html(format_json(market.market_def))
-            prices = format_to_html(market.formatted_string())
-            return market_def + prices
+
+        if market_id:
+            market = client.cache.get_market(market_id)
+            if market:
+                market_def = format_to_html(format_json(market.market_def))
+                prices = format_to_html(market.formatted_string())
+                return market_def + prices
+            else:
+                return "market %s doesn't exist" % market_id
         else:
-            return "market %s doesn't exist" % market_id
+            market_ids = client.cache.market_ids
+            return "total number of markets: {} <br><br> {}".format(len(market_ids), list(market_ids))
 
     try:
         app.run()
