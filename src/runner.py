@@ -5,6 +5,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 
+from src.client.utils.utils import format_to_html
 from src.client.client import EsaClient
 from src.client.domain.request.marketfilter import MarketFilter
 from utils.config import Configs
@@ -31,8 +32,9 @@ def main():
     @app.route('/', methods=['POST'])
     def get_market():
         market_id = request.form['text']
-        market_status = client.cache.get_market(market_id)
-        return str(market_status)
+        market = client.cache.get_market(market_id)
+        prices = market.formatted_string()
+        return format_to_html(prices)
 
     try:
         app.run()
