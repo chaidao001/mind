@@ -1,6 +1,9 @@
 import logging
-import logging.config
 import threading
+
+from flask import Flask
+from flask import render_template
+from flask import request
 
 from src.client.client import EsaClient
 from src.client.domain.request.marketfilter import MarketFilter
@@ -19,7 +22,20 @@ def main():
 
     [client, esa_thread] = start_esa(configs, session_manager, market_filter)
 
+    app = Flask(__name__)
+
+    @app.route('/')
+    def my_form():
+        return render_template("index.html")
+
+    @app.route('/', methods=['POST'])
+    def get_market():
+        market_id = request.form['text']
+        market_status = client.cache.get_market(market_id)
+        return str(market_status)
+
     try:
+        app.run()
         esa_thread.join()
     except KeyboardInterrupt:
         logging.info("Keyboard interrupt")
