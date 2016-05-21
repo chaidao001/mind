@@ -33,9 +33,12 @@ def main():
     def get_market():
         market_id = request.form['text']
         market = client.cache.get_market(market_id)
-        market_def = format_to_html(format_json(market.market_def))
-        prices = format_to_html(market.formatted_string())
-        return market_def + prices
+        if market:
+            market_def = format_to_html(format_json(market.market_def))
+            prices = format_to_html(market.formatted_string())
+            return market_def + prices
+        else:
+            return "market %s doesn't exist" % market_id
 
     try:
         app.run()
