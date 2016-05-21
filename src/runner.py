@@ -5,9 +5,9 @@ from flask import Flask
 from flask import render_template
 from flask import request
 
-from src.client.utils.utils import format_to_html
 from src.client.client import EsaClient
 from src.client.domain.request.marketfilter import MarketFilter
+from src.client.utils.utils import format_to_html, format_json
 from utils.config import Configs
 from utils.sessionmanager import SessionManager
 
@@ -33,8 +33,9 @@ def main():
     def get_market():
         market_id = request.form['text']
         market = client.cache.get_market(market_id)
-        prices = market.formatted_string()
-        return format_to_html(prices)
+        market_def = format_to_html(format_json(market.market_def))
+        prices = format_to_html(market.formatted_string())
+        return market_def + prices
 
     try:
         app.run()
