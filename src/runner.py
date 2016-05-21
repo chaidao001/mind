@@ -8,7 +8,7 @@ from flask import request
 from src.client.client import EsaClient
 from src.client.domain.request.marketfilter import MarketFilter
 from src.client.utils.utils import format_to_html, format_json
-from utils.config import Configs
+from utils.configs import Configs
 from utils.sessionmanager import SessionManager
 
 

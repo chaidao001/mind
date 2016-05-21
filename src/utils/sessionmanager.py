@@ -2,7 +2,7 @@ from datetime import datetime
 
 import requests
 
-from src.utils.config import Configs
+from src.utils.configs import Configs
 from src.utils.singleton import Singleton
 
 
