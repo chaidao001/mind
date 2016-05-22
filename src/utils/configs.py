@@ -22,6 +22,18 @@ class Configs:
         return self._cred_config.app_key
 
     @property
+    def betting_endpoint(self):
+        return self._env_config.betting_endpoint
+
+    @property
+    def account_endpoint(self):
+        return self._env_config.account_endpoint
+
+    @property
+    def scores_endpoint(self):
+        return self._env_config.scores_endpoint
+
+    @property
     def sso_endpoint(self):
         return self._env_config.sso_endpoint
 
@@ -73,6 +85,18 @@ class EnvConfig(Config):
     def __init__(self):
         self._config_file = "env.ini"
         super().__init__(self._config_file)
+
+    @property
+    def betting_endpoint(self):
+        return self._config.get("betting")
+
+    @property
+    def account_endpoint(self):
+        return self._config.get("account")
+
+    @property
+    def scores_endpoint(self):
+        return self._config.get("scores")
 
     @property
     def sso_endpoint(self):
