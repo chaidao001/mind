@@ -1,13 +1,13 @@
 import logging
 import threading
 
-from esa_client.src.client.client import EsaClient
-from esa_client.src.client.domain.request.marketfilter import MarketFilter
-from esa_client.src.client.utils.utils import format_to_html, format_json
 from flask import Flask
 from flask import render_template
 from flask import request
 
+from client.client import EsaClient
+from client.domain.request.marketfilter import MarketFilter
+from client.utils.utils import format_to_html, format_json
 from utils.configs import Configs
 from utils.sessionmanager import SessionManager
 

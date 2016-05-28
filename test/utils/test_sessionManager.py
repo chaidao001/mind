@@ -1,8 +1,8 @@
 from datetime import datetime
 from unittest import TestCase
 
-from src.utils.configs import Configs
-from src.utils.sessionmanager import SessionManager
+from utils.configs import Configs
+from utils.sessionmanager import SessionManager
 
 
 class TestSessionManager(TestCase):
